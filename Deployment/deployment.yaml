@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-petclinic
+  labels:
+    app: spring-petclinic
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: spring-petclinic
+  template:
+    metadata:
+      labels:
+        app: spring-petclinic
+    spec:
+      containers:
+      - name: spring-petclinic
+        image: axithreddy/spring-petclinic:latest
+        ports:
+        - containerPort: 8080
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: "mysql"
+        - name: SPRING_DATASOURCE_URL
+          value: "jdbc:mysql://mysql:3306/petclinic"
+        - name: SPRING_DATASOURCE_USERNAME
+          value: "petclinic"
+        - name: SPRING_DATASOURCE_PASSWORD
+          value: "petclinic"

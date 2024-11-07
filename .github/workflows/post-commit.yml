@@ -1,4 +1,4 @@
-name: Post-Commit CI
+name: Post-Commit Workflow
 
 on:
   push:
@@ -8,24 +8,22 @@ on:
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      - name: Set up JDK
-        uses: actions/setup-java@v2
-        with:
-          java-version: '17'
-          distribution: 'temurin'
+    - name: Set up JDK 17
+      uses: actions/setup-java@v2
+      with:
+        distribution: 'temurin'
+        java-version: '17'
 
-      - name: Build Docker Image
-        run: docker build -t axithreddy/spring-petclinic:latest .
-
-      - name: Log in to Docker Hub
-        env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-        run: echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
-
-      - name: Push Docker Image
-        run: docker push axithreddy/spring-petclinic:latest
+    - name: Build and push Docker image
+      env:
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      run: |
+        docker build -t $DOCKER_USERNAME/spring-petclinic:latest .
+        echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+        docker push $DOCKER_USERNAME/spring-petclinic:latest
