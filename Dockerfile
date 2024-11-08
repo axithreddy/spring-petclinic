@@ -25,4 +25,4 @@ RUN chmod +x /app/target/spring-petclinic-*.jar
 EXPOSE 8080
 
 # Run the Spring Boot application
-ENTRYPOINT ["java", "-jar", "/app/target/spring-petclinic-*.jar"]
+ENTRYPOINT ["java", "-jar", "/app/target/spring-petclinic-3.3.0-SNAPSHOT.jar"]
